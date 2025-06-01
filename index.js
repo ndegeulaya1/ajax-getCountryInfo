@@ -56,51 +56,6 @@ const htmlCountry= function(data ,className=''){
 
     countriesContainer.insertAdjacentHTML('beforeend', html);
 }
-/*
-const getCountryandNei = function (name) {
-  const request = new XMLHttpRequest();
-  request.open('GET', `https://restcountries.com/v3.1/name/${name}`);
-  request.send();
-
-  request.addEventListener('load', function () {
-    const [data] = JSON.parse(this.responseText);
-    console.log(data);
-
-    // Get first available language
-
-    htmlCountry(data);
-
-
-
-   if (!data.borders || data.borders.length === 0) return;
-const neighbour = data.borders[0];
-
-
-
-
-
-    const request2= new XMLHttpRequest(  )
-        request2.open('GET', `https://restcountries.com/v3.1/alpha/${neighbour}`)
-        request2.send()
-
-        request2.addEventListener('load',function(){
-
-            const [data2] = JSON.parse(this.responseText);
-            console.log(data2);
-                htmlCountry(data2 ,'neighbour');
-
-        })
-
-  
-   
-  });
-};
-
-
-
-
-
-*/
 
 
 const getCountryandNei = function (country) {
