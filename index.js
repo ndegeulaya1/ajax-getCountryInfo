@@ -58,44 +58,47 @@ const htmlCountry= function(data ,className=''){
 }
 
 
-const getCountryandNei = function (country) {
-  countriesContainer.innerHTML = ''; // Clear previous results
+const getCountryandNei = async function(country) {
+  try {
+    countriesContainer.innerHTML = ''; // Clear previous results
 
-  fetch(`https://restcountries.com/v3.1/name/${country}`, { cache: 'no-store' })
-    .then(res => {
-      if (!res.ok) throw new Error('Country not found');
-      return res.json();
-      console.log(res);
-    })
-    .then(data => {
-     //filter
-      const match = data.find(
-        c => c.name.common.toLowerCase() === country.toLowerCase()
-      );
-
-      if (!match) throw new Error('name of country not found');
-
-      htmlCountry(match);
-
-      const neighbour = match.borders?.[0];
-      if (!neighbour) throw new Error('No neighbouring country found');
-
-      return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`, {
-        cache: 'no-store',
-      });
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('Neighbour not found');
-      return res.json();
-    })
-    .then(data => {
-      htmlCountry(data[0], 'neighbour');
-    })
-    .catch(err => {
-     
-      countriesContainer.innerHTML = `<p class="text-red-600 font-bold">${err.message}</p>`;
+    // Fetch main country
+    const res = await fetch(`https://restcountries.com/v3.1/name/${country}`, { 
+      cache: 'no-store' 
     });
+    
+    if (!res.ok) throw new Error('Country not found');
+    
+    const data = await res.json();
+    
+    // Find exact match
+    const match = data.find(
+      c => c.name.common.toLowerCase() === country.toLowerCase()
+    );
+    
+    if (!match) throw new Error('Name of country not found');
+    
+    htmlCountry(match);
+
+    // Fetch neighbor if exists
+    const neighbour = match.borders?.[0];
+    if (!neighbour) throw new Error('No neighboring country found');
+    
+    const neighborRes = await fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`, {
+      cache: 'no-store'
+    });
+    
+    if (!neighborRes.ok) throw new Error('Neighbour not found');
+    
+    const neighborData = await neighborRes.json();
+    htmlCountry(neighborData[0], 'neighbour');
+
+  } catch (err) {
+    countriesContainer.innerHTML = `<p class="text-red-600 font-bold">${err.message}</p>`;
+    console.error('Error:', err);
+  }
 };
+
 
 
 
@@ -110,3 +113,7 @@ form.addEventListener('submit', function (e) {
   }
 });
 
+
+const promisess = function(){
+ 
+}
