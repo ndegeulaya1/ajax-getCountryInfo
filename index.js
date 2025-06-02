@@ -99,7 +99,7 @@ const getCountryandNei = function (country) {
 
 
 
-
+//control form input
 form.addEventListener('submit', function (e) {
   e.preventDefault(); // Prevent page reload
   const countryName = input.value.trim();
